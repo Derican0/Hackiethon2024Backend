@@ -11,7 +11,7 @@ from Game.gameSettings import HP, LEFTBORDER, RIGHTBORDER, LEFTSTART, RIGHTSTART
 
 # TODO FOR PARTICIPANT: Set primary and secondary skill here
 PRIMARY_SKILL = TeleportSkill
-SECONDARY_SKILL = Hadoken
+SECONDARY_SKILL = Grenade
 
 #constants, for easier move return
 #movements
