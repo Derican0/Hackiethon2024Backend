@@ -49,9 +49,10 @@ class Script:
     # MAIN FUNCTION that returns a single move to the game manager
     def get_move(self, player, enemy, player_projectiles, enemy_projectiles):
         distance = abs(get_pos(player)[0] - get_pos(enemy)[0])
-
-        if distance < 3:
-            return LIGHT
-        
-        return FORWARD
+        if not primary_on_cooldown(player) and distance <= prim_range(player):
+            return PRIMARY_SKILL
+        elif not secondary_on_cooldown(player) and distance <= seco_range(player):
+            return SECONDARY_SKILL
+        elif not heavy_on_cooldown(player) and distance <= 1:
+            return HEAVY
         
