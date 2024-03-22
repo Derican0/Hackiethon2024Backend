@@ -47,6 +47,7 @@ class Script:
     
     # MAIN FUNCTION that returns a single move to the game manager
     def get_move(self, player, enemy, player_projectiles, enemy_projectiles):
+        # ANDRE
         distance = abs(get_pos(player)[0] - get_pos(enemy)[0])
 
         if distance == 1:
