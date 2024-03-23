@@ -48,9 +48,31 @@ class Script:
     # MAIN FUNCTION that returns a single move to the game manager
     def get_move(self, player, enemy, player_projectiles, enemy_projectiles):
         distance = abs(get_pos(player)[0] - get_pos(enemy)[0])
-        print(get_last_move(player))
-        # after dash attack (cooldown), will perform heavy combo!
-        if distance > 2:
-             return FORWARD
-        if get_primary_cooldown(player) > 0:
-                return heavy_combo(player, enemy)
+        
+        # GRENADE STATE
+        if not secondary_on_cooldown(player):
+            if distance == 3:
+                return SECONDARY
+            elif distance > 3:
+                return FORWARD
+            elif distance < 3:
+                return BACK
+            
+        # ATTACK STATE
+        if get_secondary_cooldown(enemy) > 5 or get_primary_cooldown(enemy) > 5:
+            if not get_primary_cooldown(player) > 0:
+                return PRIMARY
+            return heavy_combo(player, enemy)
+            
+        # DEFEND STATE
+        # BlOCKING PROJECTILES
+        if len(enemy_projectiles) > 0:
+            proj_distance = (abs(get_pos(player)[0] - (get_proj_pos(enemy_projectiles[0])[0])))
+            if proj_distance < 2:
+                return BLOCK
+        # AVOID PLAYER
+        if get_pos(player)[0] == 15:
+            return PRIMARY
+        if distance < 5:
+            print(player.get_pos())
+            return JUMP_BACKWARD

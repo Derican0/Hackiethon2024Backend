@@ -48,11 +48,19 @@ class Script:
     
     # MAIN FUNCTION that returns a single move to the game manager
     def get_move(self, player, enemy, player_projectiles, enemy_projectiles):
+        # GRENADE!
         if not secondary_on_cooldown(player):
             return SECONDARY
         
+        # BLOCK
+        if len(enemy_projectiles) > 0:
+            proj_distance = (abs(get_pos(player)[0] - (get_proj_pos(enemy_projectiles[0])[0])))
+            if proj_distance < 2:
+                return BLOCK
+        
+        # LIGHT
         distance = abs(get_pos(player)[0] - get_pos(enemy)[0])
         if distance < 3:
-            return LIGHT
+            return heavy_combo(player, enemy)
         
         return FORWARD

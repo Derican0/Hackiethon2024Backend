@@ -53,13 +53,12 @@ class Script:
         
         # BLOCK
         if len(enemy_projectiles) > 0:
-            proj_distance = (abs(get_pos(player)[0] - (get_proj_pos(enemy_projectiles[0])[0])))
-            if proj_distance < 2:
+            if get_proj_pos(enemy_projectiles) < 2:
                 return BLOCK
         
         # LIGHT
         distance = abs(get_pos(player)[0] - get_pos(enemy)[0])
         if distance < 3:
-            return LIGHT
+            return heavy_combo(player, enemy)
         
         return FORWARD
