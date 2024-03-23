@@ -11,7 +11,7 @@ from Game.gameSettings import HP, LEFTBORDER, RIGHTBORDER, LEFTSTART, RIGHTSTART
 # SECONDARY CAN BE : Hadoken, Grenade, Boomerang, Bear Trap
 
 # TODO FOR PARTICIPANT: Set primary and secondary skill here
-PRIMARY_SKILL = TeleportSkill
+PRIMARY_SKILL = DashAttackSkill
 SECONDARY_SKILL = Hadoken
 
 #constants, for easier move return
@@ -42,8 +42,6 @@ class Script:
     def __init__(self):
         self.primary = PRIMARY_SKILL
         self.secondary = SECONDARY_SKILL
-        self.comboList = [LIGHT, LIGHT, HEAVY]
-        self.moves_used = []
         
     # DO NOT TOUCH
     def init_player_skills(self):
@@ -54,17 +52,13 @@ class Script:
     def get_move(self, player, enemy, player_projectiles, enemy_projectiles):
         distance = abs(get_pos(player)[0] - get_pos(enemy)[0])
         
-        move = self.comboList[0]
-        self.comboList = self.comboList[1:]
-        self.moves_used.append(move)
-
-        if not self.comboList:
-            print("ComboList is empty. Adding moves back.")
-            self.comboList.extend(self.moves_used)
-            self.moves_used.clear()
-
-        return move
-
+        if primary_on_cooldown(player) or secondary_on_cooldown(player):
+            if get_last_move(player) == PRIMARY_SKILL:
+                if distance not in [0, 1]:
+                    return FORWARD
+                return heavy_combo(player, enemy)
+            return PRIMARY_SKILL
+        
         
         
         
