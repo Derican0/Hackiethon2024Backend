@@ -49,13 +49,22 @@ class Script:
     # MAIN FUNCTION that returns a single move to the game manager
     def get_move(self, player, enemy, player_projectiles, enemy_projectiles):
         distance = abs(get_pos(player)[0] - get_pos(enemy)[0])
-        if len(enemy_projectiles) > 1:
-            projectile_distance = abs(get_pos(player)[0] - get_pos(enemy_projectiles[0]))
-            
-        if not secondary_on_cooldown(player) and distance <= seco_range(player):
-            return SECONDARY
-        elif projectile_distance == 1:
-            return BLOCK
-        else:
-            return FORWARD
+
+        comboList = [LIGHT, LIGHT, HEAVY, TeleportSkill, Hadoken]
+        moves_used = []
+
+        while comboList:
+            move = comboList[0]
+            comboList = comboList[1:]
+            moves_used.append(move)
+
+
+        if not comboList:
+            print("ComboList is empty. Adding moves back.")
+            comboList.extend(moves_used)
+            moves_used.clear()
+
         
+                
+
+
