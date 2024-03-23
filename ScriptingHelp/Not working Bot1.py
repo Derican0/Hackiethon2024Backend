@@ -49,8 +49,6 @@ class Script:
     def get_move(self, player, enemy, player_projectiles, enemy_projectiles):
         distance = abs(get_pos(player)[0] - get_pos(enemy)[0])
         print(get_last_move(player))
-        if get_last_move(player) != None and get_last_move(player)[0] == 'dash_attack': # what's wrong with this logic?
-                print("heavy")
+        # after dash attack (cooldown), will perform heavy combo!
+        if get_primary_cooldown(player) > 0:
                 return heavy_combo(player, enemy)
-        print("primary")
-        return PRIMARY
