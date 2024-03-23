@@ -42,7 +42,7 @@ class Script:
     def __init__(self):
         self.primary = PRIMARY_SKILL
         self.secondary = SECONDARY_SKILL
-        self.comboList = [LIGHT, LIGHT, HEAVY, PRIMARY_SKILL, SECONDARY_SKILL]
+        self.comboList = [LIGHT, LIGHT, HEAVY]
         self.moves_used = []
         
     # DO NOT TOUCH
@@ -54,17 +54,19 @@ class Script:
     def get_move(self, player, enemy, player_projectiles, enemy_projectiles):
         distance = abs(get_pos(player)[0] - get_pos(enemy)[0])
         
-        while self.comboList:
-            move = self.comboList[0]
-            self.comboList = self.comboList[1:]
-            self.moves_used.append(move)
-            return FORWARD
+        move = self.comboList[0]
+        self.comboList = self.comboList[1:]
+        self.moves_used.append(move)
 
         if not self.comboList:
             print("ComboList is empty. Adding moves back.")
             self.comboList.extend(self.moves_used)
             self.moves_used.clear()
 
+        return move
+
+        
+        
         
                 
 
