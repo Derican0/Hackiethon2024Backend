@@ -11,7 +11,7 @@ from Game.gameSettings import HP, LEFTBORDER, RIGHTBORDER, LEFTSTART, RIGHTSTART
 
 # TODO FOR PARTICIPANT: Set primary and secondary skill here
 PRIMARY_SKILL = TeleportSkill
-SECONDARY_SKILL = Hadoken
+SECONDARY_SKILL = Grenade
 
 #constants, for easier move return
 #movements
@@ -41,6 +41,8 @@ class Script:
     def __init__(self):
         self.primary = PRIMARY_SKILL
         self.secondary = SECONDARY_SKILL
+        self.comboList = [LIGHT, LIGHT, HEAVY]
+        self.moves_used = []
         
     # DO NOT TOUCH
     def init_player_skills(self):
@@ -48,23 +50,22 @@ class Script:
     
     # MAIN FUNCTION that returns a single move to the game manager
     def get_move(self, player, enemy, player_projectiles, enemy_projectiles):
-        distance = abs(get_pos(player)[0] - get_pos(enemy)[0])
 
-        if get_stun_duration(enemy) == True:
-            if distance != 1:
-                return FORWARD * distance
+        # STATE MACHINE!! ATTACK or DEFEND MODE
 
-        if get_stun_duration(enemy) == True or distance == 1:
-            if get_past_move(player, 1):
-                return LIGHT
-
-        if get_past_move(player, 2):
-            return LIGHT
-        else:
-            return BACK
-
-        if get_past_move(player, 3):
-            return HEAVY
-        else:
-            return BACK
+        # GRENADE!
+        if not secondary_on_cooldown(player):
+            return SECONDARY
         
+        # BLOCK
+        if len(enemy_projectiles) > 0:
+            proj_distance = (abs(get_pos(player)[0] - (get_proj_pos(enemy_projectiles[0])[0])))
+            if proj_distance < 2:
+                return BLOCK
+        
+        # LIGHT
+        distance = abs(get_pos(player)[0] - get_pos(enemy)[0])
+        if distance < 3:
+            return LIGHT
+        
+        return FORWARD

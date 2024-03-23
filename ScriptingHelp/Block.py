@@ -48,14 +48,14 @@ class Script:
     # MAIN FUNCTION that returns a single move to the game manager
     def get_move(self, player, enemy, player_projectiles, enemy_projectiles):
         distance = abs(get_pos(player)[0] - get_pos(enemy)[0])
-        projectile_distance = 0
-        if len(enemy_projectiles) > 1:
-            projectile_distance = abs(get_pos(player)[0] - get_pos(enemy_projectiles[0]))
-
-        if not secondary_on_cooldown(player) and distance <= seco_range(player):
-            return SECONDARY
-        elif projectile_distance == 1:
-            return BLOCK
-        else:
+        if len(enemy_projectiles) > 0:
+            proj_distance = (abs(get_pos(player)[0] - (get_proj_pos(enemy_projectiles[0])[0])))
+        
+        if len(enemy_projectiles) > 0:
+            if proj_distance < 2:
+                return BLOCK
+        
+        if distance > 3:
             return FORWARD
         
+        return NOMOVE
